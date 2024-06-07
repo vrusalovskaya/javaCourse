@@ -20,4 +20,13 @@ public class TicketStorage {
         this.storage.add(Ticket.create(new TicketPrice(BigDecimal.valueOf(500), Currency.USD), "TuneHub", 555,1875495404L, false, StadiumSector.B, 10.5));
         this.storage.add(Ticket.create(new TicketPrice(BigDecimal.valueOf(600), Currency.USD), "AriaHall", 666,1907031404L, true, StadiumSector.C, 5.0));
     }
+
+    public Ticket getTicketById(int id){
+        for (Ticket ticket : this.storage) {
+            if (ticket.getId() == id){
+                return ticket;
+            }
+        }
+        return null;
+    }
 }
