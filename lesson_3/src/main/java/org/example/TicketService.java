@@ -5,8 +5,17 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TicketService {
+
+    List<Ticket> tickets;
+
+    public TicketService() {
+        this.tickets = new ArrayList<>();
+    }
+
     public static void main(String[] args) {
         Ticket emptyTicket = Ticket.createEmpty();
         Ticket limitedTicket = Ticket.createLimited(
@@ -59,5 +68,11 @@ public class TicketService {
         int kilograms = (int) weight;
         int grams = (int) ((weight - kilograms) * 1000);
         return kilograms + " kg " + grams + " g";
+    }
+
+    public Ticket findTicketByStadiumSector(StadiumSector sector) {
+        return tickets.stream()
+                .filter(ticket -> ticket.getSector().equals(sector))
+                .findFirst().orElse(null);
     }
 }
