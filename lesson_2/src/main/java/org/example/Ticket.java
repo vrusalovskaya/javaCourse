@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.util.Optional;
 
 public class Ticket {
-    private final int id;
+    private final String id;
     private final long creationTime;
     // Main motivation to use Optional is to make sure that Empty and Limited ticket
     // would be valid from business logic validation perspective,
@@ -73,7 +73,7 @@ public class Ticket {
         return new Ticket(price, concertHall, eventCode, time, isPromo, sector, allowedBackpackWeight);
     }
 
-    public int getId() {
+    public String getId() {
         return this.id;
     }
 
@@ -109,8 +109,10 @@ public class Ticket {
         return allowedBackpackWeight;
     }
 
-    private int generateId() {
-        return 1 + (int) (Math.random() * ((9999 - 1) + 1));
+    private String generateId() {
+        String digits = String.valueOf(1 + (int) (Math.random() * ((999 - 1) + 1)));
+        Character character = (char)(65 + (int) (Math.random() * ((90 - 65) + 1)));
+        return character + digits;
     }
 
     private long getCurrentUnixTime() {
