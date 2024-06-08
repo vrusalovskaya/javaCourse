@@ -1,9 +1,12 @@
 package org.example;
 
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
-public class Ticket {
+public class Ticket implements Printer {
     private final String id;
     private final long creationTime;
     private TicketPrice price;
@@ -93,12 +96,20 @@ public class Ticket {
        return get(time);
     }
 
+    public void setTime(Long time){
+        this.time = time;
+    }
+
     public Optional<Boolean> isPromo() {
         return get(isPromo);
     }
 
     public Optional<StadiumSector> getSector() {
        return get(sector);
+    }
+
+    private void setSector (StadiumSector sector){
+        this.sector = sector;
     }
 
     public Optional<Double> getAllowedBackpackWeight() {
@@ -135,5 +146,39 @@ public class Ticket {
         if (weight <= 0) {
             throw new IllegalArgumentException("Weight must be positive");
         }
+    }
+
+    @Override
+    public void print() {
+        System.out.println("Ticket ID: " + this.getId());
+        System.out.println("Creation time: " + covertToHumanReadableDate(this.getCreationTime()));
+
+        if (this.getPrice().isPresent() && this.getConcertHall().isPresent() && this.getEventCode().isPresent() && this.getTime().isPresent()) {
+            System.out.println("Price: " + this.getPrice().get());
+            System.out.println("Concert hall: " + this.getConcertHall().get());
+            System.out.println("Event code: " + this.getEventCode().get());
+            System.out.println("Time: " + covertToHumanReadableDate(this.getTime().get()));
+        }
+
+        if (this.isPromo().isPresent() && this.getSector().isPresent() && this.getAllowedBackpackWeight().isPresent()) {
+            System.out.println("Promo ticket: " + this.isPromo().get());
+            System.out.println("Stadium sector: " + this.getSector().get());
+            System.out.println("Allowed backpack weight: " + formatWeight(this.getAllowedBackpackWeight().get()));
+        }
+
+        System.out.println();
+    }
+
+    private static String covertToHumanReadableDate(long unixTime) {
+        Instant instant = Instant.ofEpochSecond(unixTime);
+        ZonedDateTime dateTime = instant.atZone(ZoneId.systemDefault());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return dateTime.format(formatter);
+    }
+
+    private static String formatWeight(double weight) {
+        int kilograms = (int) weight;
+        int grams = (int) ((weight - kilograms) * 1000);
+        return kilograms + " kg " + grams + " g";
     }
 }
