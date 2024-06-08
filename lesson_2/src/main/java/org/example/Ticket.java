@@ -6,17 +6,13 @@ import java.util.Optional;
 public class Ticket {
     private final String id;
     private final long creationTime;
-    // Main motivation to use Optional is to make sure that Empty and Limited ticket
-    // would be valid from business logic validation perspective,
-    // meaning that Empty or Limited ticket will not have invalid event code, etc.
-    // Need feedback on that.
-    private Optional<TicketPrice> price = Optional.empty();
-    private Optional<String> concertHall = Optional.empty();
-    private Optional<Integer> eventCode = Optional.empty();
-    private Optional<Long> time = Optional.empty();
-    private Optional<Boolean> isPromo = Optional.empty();
-    private Optional<StadiumSector> sector = Optional.empty();
-    private Optional<Double> allowedBackpackWeight = Optional.empty();
+    private TicketPrice price;
+    private String concertHall;
+    private Integer eventCode;
+    private Long time;
+    private Boolean isPromo;
+    private StadiumSector sector;
+    private Double allowedBackpackWeight;
 
     private Ticket() {
         this.id = generateId();
@@ -25,10 +21,10 @@ public class Ticket {
 
     private Ticket(TicketPrice price, String concertHall, Integer eventCode, Long time) {
         this();
-        this.price = Optional.of(price);
-        this.concertHall = Optional.of(concertHall.trim());
-        this.eventCode = Optional.of(eventCode);
-        this.time = Optional.of(time);
+        this.price = price;
+        this.concertHall = concertHall.trim();
+        this.eventCode = eventCode;
+        this.time = time;
     }
 
     private Ticket(
@@ -40,9 +36,9 @@ public class Ticket {
             StadiumSector sector,
             Double allowedBackpackWeight) {
         this(price, concertHall, eventCode, time);
-        this.isPromo = Optional.of(isPromo);
-        this.sector = Optional.of(sector);
-        this.allowedBackpackWeight = Optional.of(allowedBackpackWeight);
+        this.isPromo = isPromo;
+        this.sector = sector;
+        this.allowedBackpackWeight = allowedBackpackWeight;
     }
 
     public static Ticket createEmpty() {
@@ -74,7 +70,7 @@ public class Ticket {
     }
 
     public String getId() {
-        return this.id;
+        return id;
     }
 
     public long getCreationTime() {
@@ -82,31 +78,35 @@ public class Ticket {
     }
 
     public Optional<TicketPrice> getPrice() {
-        return price;
+       return get(price);
     }
 
     public Optional<String> getConcertHall() {
-        return concertHall;
+       return get(concertHall);
     }
 
     public Optional<Integer> getEventCode() {
-        return eventCode;
+       return get(eventCode);
     }
 
     public Optional<Long> getTime() {
-        return time;
+       return get(time);
     }
 
     public Optional<Boolean> isPromo() {
-        return isPromo;
+        return get(isPromo);
     }
 
     public Optional<StadiumSector> getSector() {
-        return sector;
+       return get(sector);
     }
 
     public Optional<Double> getAllowedBackpackWeight() {
-        return allowedBackpackWeight;
+        return get(allowedBackpackWeight);
+    }
+
+    private <T>Optional<T> get(T value){
+        return value == null ? Optional.empty() : Optional.of(value);
     }
 
     private String generateId() {
