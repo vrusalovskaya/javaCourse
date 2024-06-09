@@ -11,7 +11,7 @@ public class TicketService {
         Ticket emptyTicket = Ticket.createEmpty();
         Ticket limitedTicket = Ticket.createLimited(
                 new TicketPrice(BigDecimal.valueOf(100), Currency.USD),
-                "Musik",
+                "TNT",
                 123,
                 1728054000L);
         Ticket fullTicket = Ticket.create(
