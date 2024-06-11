@@ -169,6 +169,14 @@ public class Ticket implements Printable {
         System.out.println();
     }
 
+    public void share(String phone){
+        System.out.println("Ticket with ID " + this.getId() + " is shared by phone: " + phone);
+    }
+
+    public void share(String phone, String email){
+        System.out.println("Ticket with ID " + this.getId() + " is shared by phone: " + phone + " and by email: " + email);
+    }
+
     private static String covertToHumanReadableDate(long unixTime) {
         Instant instant = Instant.ofEpochSecond(unixTime);
         ZonedDateTime dateTime = instant.atZone(ZoneId.systemDefault());
