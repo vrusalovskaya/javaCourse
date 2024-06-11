@@ -6,7 +6,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
-public class Ticket implements Printer {
+public class Ticket implements Printable {
     private final String id;
     private final long creationTime;
     private TicketPrice price;

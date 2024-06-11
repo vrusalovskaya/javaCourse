@@ -1,6 +1,6 @@
 package org.example;
 
-public interface Printer {
+public interface Printable {
 
     default void print(){
         System.out.println(this);
