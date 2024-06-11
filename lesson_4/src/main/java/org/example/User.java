@@ -1,9 +1,10 @@
 package org.example;
 
-public abstract class User {
+public abstract class User extends Entity {
     private final String name;
 
-    public User (String name){
+    public User (Integer id, String name){
+        this.setId(id);
         this.name = name;
     }
 

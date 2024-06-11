@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public class Admin extends User{
 
-    public Admin(String name){
-        super(name);
+    public Admin(int id, String name){
+        super(id, name);
     }
 
     @Override

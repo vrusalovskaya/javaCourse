@@ -6,8 +6,8 @@ public class Client extends User {
 
     private final ArrayList<Ticket> tickets;
 
-    public Client(String name) {
-        super(name);
+    public Client(int id, String name) {
+        super(id, name);
         this.tickets = new ArrayList<>();
     }
 

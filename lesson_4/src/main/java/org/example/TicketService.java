@@ -27,8 +27,8 @@ public class TicketService {
         emptyTicket.share("+37529123456789");
         emptyTicket.share("+37529987654321", "test@example.com");
 
-        Client tom = new Client("Tom");
-        Admin bob = new Admin("Bob");
+        Client tom = new Client(1,"Tom");
+        Admin bob = new Admin(2,"Bob");
 
         // dynamic polymorphism (overriding)
         ((User) tom).printRole();
