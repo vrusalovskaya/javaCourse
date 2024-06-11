@@ -22,5 +22,19 @@ public class TicketService {
         emptyTicket.print();
         limitedTicket.print();
         fullTicket.print();
+
+        //static polymorphism (overloading)
+        emptyTicket.share("+37529123456789");
+        emptyTicket.share("+37529987654321", "test@example.com");
+
+        Client tom = new Client("Tom");
+        Admin bob = new Admin("Bob");
+
+        // dynamic polymorphism (overriding)
+        ((User) tom).printRole();
+        ((User) bob).printRole();
+
+        tom.getTicket(fullTicket);
+        bob.checkTicket(limitedTicket, 123);
     }
 }
