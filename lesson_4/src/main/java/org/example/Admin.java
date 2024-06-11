@@ -17,7 +17,7 @@ public class Admin extends User{
         if(ticket.getEventCode().isPresent() && Objects.equals(eventCode, ticket.getEventCode().get())){
             System.out.println("The ticket with ID " + ticket.getId() + "is valid for the event " + eventCode);
         } else {
-            System.out.println("The ticket with ID " + ticket.getId() + "is not valid for the event with code " + eventCode);
+            System.out.println("The ticket with ID " + ticket.getId() + " is not valid for the event with code " + eventCode);
         }
     }
 }

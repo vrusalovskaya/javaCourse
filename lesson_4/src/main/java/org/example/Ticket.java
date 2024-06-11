@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.Optional;
 
 public class Ticket implements Printable {
@@ -167,6 +168,19 @@ public class Ticket implements Printable {
         }
 
         System.out.println();
+    }
+
+    @Override
+    public boolean equals(Object object){
+        if (object == null) return false;
+        if (object == this) return true;
+        if (!(object instanceof Ticket)) return false;
+        return Objects.equals(this.getId(), ((Ticket) object).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id.hashCode();
     }
 
     public void share(String phone){

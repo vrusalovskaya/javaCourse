@@ -36,5 +36,9 @@ public class TicketService {
 
         tom.getTicket(fullTicket);
         bob.checkTicket(limitedTicket, 123);
+
+        Ticket testTicket = fullTicket;
+        System.out.println(testTicket.equals(limitedTicket));
+        System.out.println(testTicket.equals(fullTicket));
     }
 }
