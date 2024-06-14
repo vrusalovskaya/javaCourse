@@ -43,7 +43,7 @@ public class TicketService {
         ((User) bob).printRole();
 
         tom.getTicket(fullTicket);
-        bob.checkTicket(limitedTicket, 123);
+        bob.checkTicket(emptyTicket, 123);
 
         Ticket testTicket = fullTicket;
         System.out.println(testTicket.equals(limitedTicket));

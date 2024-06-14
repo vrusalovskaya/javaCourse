@@ -197,6 +197,21 @@ public class Ticket implements Printable {
         return this.id.hashCode();
     }
 
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id='" + id + '\'' +
+                ", creationTime=" + creationTime +
+                ", price=" + price +
+                ", concertHall='" + concertHall + '\'' +
+                ", eventCode=" + eventCode +
+                ", time=" + time +
+                ", isPromo=" + isPromo +
+                ", sector=" + sector +
+                ", allowedBackpackWeight=" + allowedBackpackWeight +
+                '}';
+    }
+
     public void share(String phone) {
         System.out.println("Ticket with ID " + this.getId() + " is shared by phone: " + phone);
     }
