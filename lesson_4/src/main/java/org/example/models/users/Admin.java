@@ -1,8 +1,10 @@
-package org.example;
+package org.example.models.users;
+
+import org.example.models.tickets.Ticket;
 
 import java.util.Objects;
 
-public class Admin extends User{
+public class Admin extends User {
 
     public Admin(int id, String name){
         super(id, name);

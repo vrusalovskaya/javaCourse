@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.annotations.NullableWarning;
+
 import java.lang.reflect.Field;
 
 public class AnnotationProcessor {

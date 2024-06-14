@@ -1,5 +1,13 @@
 package org.example;
 
+import org.example.models.tickets.Currency;
+import org.example.models.tickets.StadiumSector;
+import org.example.models.tickets.Ticket;
+import org.example.models.tickets.TicketPrice;
+import org.example.models.users.Admin;
+import org.example.models.users.Client;
+import org.example.models.users.User;
+
 import java.math.BigDecimal;
 
 public class TicketService {

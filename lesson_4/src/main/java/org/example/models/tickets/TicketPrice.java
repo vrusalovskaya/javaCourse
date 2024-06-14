@@ -1,4 +1,5 @@
-package org.example;
+package org.example.models.tickets;
+
 import java.math.BigDecimal;
 
 public class TicketPrice {

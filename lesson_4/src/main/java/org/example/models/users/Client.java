@@ -1,4 +1,6 @@
-package org.example;
+package org.example.models.users;
+
+import org.example.models.tickets.Ticket;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,6 @@
-package org.example;
+package org.example.models.users;
+
+import org.example.models.Entity;
 
 public abstract class User extends Entity {
     private final String name;

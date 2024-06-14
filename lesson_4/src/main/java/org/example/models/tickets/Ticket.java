@@ -1,4 +1,8 @@
-package org.example;
+package org.example.models.tickets;
+
+import org.example.AnnotationProcessor;
+import org.example.Printable;
+import org.example.annotations.NullableWarning;
 
 import java.time.Instant;
 import java.time.ZoneId;

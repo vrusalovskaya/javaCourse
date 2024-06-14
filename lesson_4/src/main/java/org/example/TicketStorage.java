@@ -1,5 +1,10 @@
 package org.example;
 
+import org.example.models.tickets.Currency;
+import org.example.models.tickets.StadiumSector;
+import org.example.models.tickets.Ticket;
+import org.example.models.tickets.TicketPrice;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Objects;
