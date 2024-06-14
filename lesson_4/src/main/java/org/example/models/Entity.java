@@ -8,6 +8,6 @@ public abstract class Entity {
     }
 
     public void setId(int id) {
-       Id = id;
+        Id = id;
     }
 }

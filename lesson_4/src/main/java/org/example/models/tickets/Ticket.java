@@ -58,7 +58,7 @@ public class Ticket implements Printable {
         return ticket;
     }
 
-    public static Ticket createLimited(TicketPrice price, String concertHall, Integer eventCode, Long time) {
+    public static Ticket createLimited(TicketPrice price, String concertHall, Integer eventCode, Long time) throws IllegalArgumentException {
 
         validateConcertHall(concertHall);
         validateEventCode(eventCode);
@@ -75,7 +75,7 @@ public class Ticket implements Printable {
             Long time,
             Boolean isPromo,
             StadiumSector sector,
-            Double allowedBackpackWeight) {
+            Double allowedBackpackWeight) throws IllegalArgumentException {
 
         validateConcertHall(concertHall);
         validateEventCode(eventCode);
@@ -123,12 +123,69 @@ public class Ticket implements Printable {
         return get(sector);
     }
 
-    private void setSector(StadiumSector sector) {
+    public void setSector(StadiumSector sector) {
         this.sector = sector;
     }
 
     public Optional<Double> getAllowedBackpackWeight() {
         return get(allowedBackpackWeight);
+    }
+
+    @Override
+    public void print() {
+        System.out.println("Ticket ID: " + this.getId());
+        System.out.println("Creation time: " + covertToHumanReadableDate(this.getCreationTime()));
+
+        if (this.getPrice().isPresent() && this.getConcertHall().isPresent() && this.getEventCode().isPresent() && this.getTime().isPresent()) {
+            System.out.println("Price: " + this.getPrice().get());
+            System.out.println("Concert hall: " + this.getConcertHall().get());
+            System.out.println("Event code: " + this.getEventCode().get());
+            System.out.println("Time: " + covertToHumanReadableDate(this.getTime().get()));
+        }
+
+        if (this.isPromo().isPresent() && this.getSector().isPresent() && this.getAllowedBackpackWeight().isPresent()) {
+            System.out.println("Promo ticket: " + this.isPromo().get());
+            System.out.println("Stadium sector: " + this.getSector().get());
+            System.out.println("Allowed backpack weight: " + formatWeight(this.getAllowedBackpackWeight().get()));
+        }
+
+        System.out.println();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == null) return false;
+        if (object == this) return true;
+        if (!(object instanceof Ticket)) return false;
+        return ((Ticket) object).getId().equals(getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id='" + id + '\'' +
+                ", creationTime=" + creationTime +
+                ", price=" + price +
+                ", concertHall='" + concertHall + '\'' +
+                ", eventCode=" + eventCode +
+                ", time=" + time +
+                ", isPromo=" + isPromo +
+                ", sector=" + sector +
+                ", allowedBackpackWeight=" + allowedBackpackWeight +
+                '}';
+    }
+
+    public void share(String phone) {
+        System.out.println("Ticket with ID " + this.getId() + " is shared by phone: " + phone);
+    }
+
+    public void share(String phone, String email) {
+        System.out.println("Ticket with ID " + this.getId() + " is shared by phone: " + phone + " and by email: " + email);
     }
 
     private <T> Optional<T> get(T value) {
@@ -161,63 +218,6 @@ public class Ticket implements Printable {
         if (weight <= 0) {
             throw new IllegalArgumentException("Weight must be positive");
         }
-    }
-
-    @Override
-    public void print() {
-        System.out.println("Ticket ID: " + this.getId());
-        System.out.println("Creation time: " + covertToHumanReadableDate(this.getCreationTime()));
-
-        if (this.getPrice().isPresent() && this.getConcertHall().isPresent() && this.getEventCode().isPresent() && this.getTime().isPresent()) {
-            System.out.println("Price: " + this.getPrice().get());
-            System.out.println("Concert hall: " + this.getConcertHall().get());
-            System.out.println("Event code: " + this.getEventCode().get());
-            System.out.println("Time: " + covertToHumanReadableDate(this.getTime().get()));
-        }
-
-        if (this.isPromo().isPresent() && this.getSector().isPresent() && this.getAllowedBackpackWeight().isPresent()) {
-            System.out.println("Promo ticket: " + this.isPromo().get());
-            System.out.println("Stadium sector: " + this.getSector().get());
-            System.out.println("Allowed backpack weight: " + formatWeight(this.getAllowedBackpackWeight().get()));
-        }
-
-        System.out.println();
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (object == null) return false;
-        if (object == this) return true;
-        if (!(object instanceof Ticket)) return false;
-        return Objects.equals(this.getId(), ((Ticket) object).getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return this.id.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return "Ticket{" +
-                "id='" + id + '\'' +
-                ", creationTime=" + creationTime +
-                ", price=" + price +
-                ", concertHall='" + concertHall + '\'' +
-                ", eventCode=" + eventCode +
-                ", time=" + time +
-                ", isPromo=" + isPromo +
-                ", sector=" + sector +
-                ", allowedBackpackWeight=" + allowedBackpackWeight +
-                '}';
-    }
-
-    public void share(String phone) {
-        System.out.println("Ticket with ID " + this.getId() + " is shared by phone: " + phone);
-    }
-
-    public void share(String phone, String email) {
-        System.out.println("Ticket with ID " + this.getId() + " is shared by phone: " + phone + " and by email: " + email);
     }
 
     private static String covertToHumanReadableDate(long unixTime) {

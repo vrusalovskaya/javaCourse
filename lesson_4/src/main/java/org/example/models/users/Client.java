@@ -6,11 +6,10 @@ import java.util.ArrayList;
 
 public class Client extends User {
 
-    private final ArrayList<Ticket> tickets;
+    private Ticket ticket;
 
     public Client(int id, String name) {
         super(id, name);
-        this.tickets = new ArrayList<>();
     }
 
     @Override
@@ -18,8 +17,11 @@ public class Client extends User {
         System.out.println("I'm client");
     }
 
-    public void getTicket(Ticket ticket) {
-        tickets.add(ticket);
-        System.out.println("Ticket with ID " + ticket.getId() + " is added to " + this.getName() + "'s storage");
+    public void setTicket(Ticket ticket){
+        this.ticket = ticket;
+    }
+
+    public Ticket getTicket(){
+        return ticket;
     }
 }
