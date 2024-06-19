@@ -1,17 +1,22 @@
 package org.example;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class BusTicket {
     private String ticketClass;
     private String ticketType;
     private String ticketDate;
     private String price;
 
-    public BusTicket(String ticketClass, String ticketType, String ticketDate, String price) {
+    @JsonCreator
+    public BusTicket(@JsonProperty ("ticketClass") String ticketClass, @JsonProperty ("ticketType") String ticketType, @JsonProperty ("startDate") String ticketDate, @JsonProperty ("price") String price) {
         this.ticketClass = ticketClass;
         this.ticketType = ticketType;
         this.ticketDate = ticketDate;
         this.price = price;
     }
+
 
     public String getTicketType() {
         return ticketType;
@@ -45,4 +50,8 @@ public class BusTicket {
         this.price = price;
     }
 
+    @Override
+    public String toString() {
+        return "Ticket class: " + this.getTicketClass() + ", type: " + this.getTicketType() + ", date: " + this.getTicketDate() + ", price: " + this.getPrice();
+    }
 }
