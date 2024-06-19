@@ -1,70 +1,74 @@
 package org.example;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
 
         BusTicketsReader reader = new JsonBusTicketsReader("src/main/resources/BusTickets.json");
-        ArrayList<BusTicket> tickets = reader.getValues();
+        List<BusTicket> tickets = reader.getValues();
 
-        int invalidTypeCounter = 0;
-        int invalidDateCounter = 0;
-        int invalidPriceCounter = 0;
-        ArrayList<BusTicket> invalidTickets = new ArrayList<>();
-        int totalOfTickets = tickets.size();
+        int invalidTypeCount = 0;
+        int invalidDateCount = 0;
+        int invalidPriceCount = 0;
+        HashSet<BusTicket> invalidTickets = new HashSet<>();
 
         for (BusTicket ticket : tickets) {
 
             System.out.println(ticket);
 
-            if (!Validator.isValidTicketType(ticket)) {
-                invalidTypeCounter++;
-                addIfAbsent(invalidTickets, ticket);
+            if (!BusTicketValidator.isValidTicketType(ticket)) {
+                invalidTypeCount++;
+                invalidTickets.add(ticket);
                 System.out.println("The type of the ticket is not valid: " + ticket.getTicketType());
             }
 
-            if (!Validator.isValidTicketDate(ticket)) {
-                invalidDateCounter++;
-                addIfAbsent(invalidTickets, ticket);
+            if (!BusTicketValidator.isValidTicketDate(ticket)) {
+                invalidDateCount++;
+                invalidTickets.add(ticket);
                 System.out.println("The date of the ticket is not valid: " + ticket.getTicketDate());
             }
 
-            if (!Validator.isValidTicketPrice(ticket)) {
-                invalidPriceCounter++;
-                addIfAbsent(invalidTickets, ticket);
+            if (!BusTicketValidator.isValidTicketPrice(ticket)) {
+                invalidPriceCount++;
+                invalidTickets.add(ticket);
                 System.out.println("The price of the ticket is not valid: " + ticket.getPrice());
             }
 
             System.out.println();
         }
 
-        int validTickets = totalOfTickets - invalidTickets.size();
+        int ticketsCount = tickets.size();
+        int validTickets = ticketsCount - invalidTickets.size();
 
-        String popularViolation = getString(invalidTypeCounter, invalidDateCounter, invalidPriceCounter);
+        String popularViolation = buildMostPopularViolationsMessage(invalidTypeCount, invalidDateCount, invalidPriceCount);
 
-        System.out.println("Total = " + totalOfTickets + "\n" +
+        System.out.println("Total = " + ticketsCount + "\n" +
                 "Valid =  " + validTickets + "\n" +
                 "Most popular violation = " + popularViolation);
     }
 
-    private static void addIfAbsent(ArrayList<BusTicket> invalidTickets, BusTicket ticket) {
-        if (!invalidTickets.contains(ticket)) {
-            invalidTickets.add(ticket);
+    private static String buildMostPopularViolationsMessage(
+            int invalidTypeCount,
+            int invalidDateCount,
+            int invalidPriceCount) {
+
+        if (invalidTypeCount == 0 && invalidDateCount == 0 && invalidPriceCount == 0) {
+            return "none";
         }
-    }
 
-    private static String getString(int invalidTypeCounter, int invalidDateCounter, int invalidPriceCounter) {
         String popularViolation = "";
+        if (invalidTypeCount >= invalidDateCount && invalidTypeCount >= invalidPriceCount) {
+            popularViolation = "ticket type ";
+        }
 
-        if (invalidTypeCounter == 0 && invalidDateCounter == 0 && invalidPriceCounter == 0) {
-            popularViolation = "none";
-        } else if (invalidTypeCounter >= invalidDateCounter && invalidTypeCounter >= invalidPriceCounter) {
-            popularViolation = popularViolation + "ticket type ";
-        } else if (invalidDateCounter >= invalidTypeCounter && invalidDateCounter >= invalidPriceCounter) {
+        if (invalidDateCount >= invalidTypeCount && invalidDateCount >= invalidPriceCount) {
             popularViolation = popularViolation + "start date ";
-        } else if (invalidPriceCounter >= invalidDateCounter && invalidPriceCounter >= invalidTypeCounter) {
+        }
+
+        if (invalidPriceCount >= invalidDateCount && invalidPriceCount >= invalidTypeCount) {
             popularViolation = popularViolation + "price ";
         }
 

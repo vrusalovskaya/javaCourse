@@ -4,19 +4,23 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class BusTicket {
+
     private String ticketClass;
     private String ticketType;
     private String ticketDate;
     private String price;
 
     @JsonCreator
-    public BusTicket(@JsonProperty ("ticketClass") String ticketClass, @JsonProperty ("ticketType") String ticketType, @JsonProperty ("startDate") String ticketDate, @JsonProperty ("price") String price) {
+    public BusTicket(
+            @JsonProperty("ticketClass") String ticketClass,
+            @JsonProperty("ticketType") String ticketType,
+            @JsonProperty("startDate") String ticketDate,
+            @JsonProperty("price") String price) {
         this.ticketClass = ticketClass;
         this.ticketType = ticketType;
         this.ticketDate = ticketDate;
         this.price = price;
     }
-
 
     public String getTicketType() {
         return ticketType;
