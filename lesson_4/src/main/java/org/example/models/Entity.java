@@ -1,13 +1,13 @@
 package org.example.models;
 
 public abstract class Entity {
-    protected int Id;
+    protected int id;
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public void setId(int id) {
-        Id = id;
+        this.id = id;
     }
 }
