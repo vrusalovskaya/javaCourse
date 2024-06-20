@@ -1,10 +1,14 @@
 package org.example;
 
+import org.example.models.tickets.Currency;
+import org.example.models.tickets.StadiumSector;
+import org.example.models.tickets.Ticket;
+import org.example.models.tickets.TicketPrice;
+import org.example.models.users.Admin;
+import org.example.models.users.Client;
+import org.example.models.users.User;
+
 import java.math.BigDecimal;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class TicketService {
     public static void main(String[] args) {
@@ -23,41 +27,27 @@ public class TicketService {
                 StadiumSector.A,
                 3.25);
 
-        printTicket(emptyTicket);
-        printTicket(limitedTicket);
-        printTicket(fullTicket);
-    }
+        emptyTicket.print();
+        limitedTicket.print();
+        fullTicket.print();
 
-    private static void printTicket(Ticket ticket) {
-        System.out.println("Ticket ID: " + ticket.getId());
-        System.out.println("Creation time: " + covertToHumanReadableDate(ticket.getCreationTime()));
+        //static polymorphism (overloading)
+        emptyTicket.share("+37529123456789");
+        emptyTicket.share("+37529987654321", "test@example.com");
 
-        if (ticket.getPrice().isPresent() && ticket.getConcertHall().isPresent() && ticket.getEventCode().isPresent() && ticket.getTime().isPresent()) {
-            System.out.println("Price: " + ticket.getPrice().get());
-            System.out.println("Concert hall: " + ticket.getConcertHall().get());
-            System.out.println("Event code: " + ticket.getEventCode().get());
-            System.out.println("Time: " + covertToHumanReadableDate(ticket.getTime().get()));
-        }
+        Client tom = new Client(1, "Tom");
+        Admin bob = new Admin(2, "Bob");
 
-        if (ticket.isPromo().isPresent() && ticket.getSector().isPresent() && ticket.getAllowedBackpackWeight().isPresent()) {
-            System.out.println("Promo ticket: " + ticket.isPromo().get());
-            System.out.println("Stadium sector: " + ticket.getSector().get());
-            System.out.println("Allowed backpack weight: " + formatWeight(ticket.getAllowedBackpackWeight().get()));
-        }
+        // dynamic polymorphism (overriding)
+        ((User) tom).printRole();
+        ((User) bob).printRole();
 
-        System.out.println();
-    }
+        tom.setTicket(fullTicket);
+        System.out.println(tom.getName() + "'s ticket: " + tom.getTicket());
+        bob.checkTicket(emptyTicket, 123);
 
-    private static String covertToHumanReadableDate(long unixTime) {
-        Instant instant = Instant.ofEpochSecond(unixTime);
-        ZonedDateTime dateTime = instant.atZone(ZoneId.systemDefault());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return dateTime.format(formatter);
-    }
-
-    private static String formatWeight(double weight) {
-        int kilograms = (int) weight;
-        int grams = (int) ((weight - kilograms) * 1000);
-        return kilograms + " kg " + grams + " g";
+        Ticket testTicket = fullTicket;
+        System.out.println(testTicket.equals(limitedTicket));
+        System.out.println(testTicket.equals(fullTicket));
     }
 }

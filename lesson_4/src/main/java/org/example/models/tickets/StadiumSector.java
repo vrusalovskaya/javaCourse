@@ -1,4 +1,4 @@
-package org.example;
+package org.example.models.tickets;
 
 public enum StadiumSector {
     A,
