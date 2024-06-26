@@ -2,6 +2,7 @@ package org.example;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -39,5 +40,23 @@ public class Main {
         System.out.println("Total = " + ticketsCount + "\n" +
                 "Valid =  " + validTickets + "\n" +
                 "Most popular violation = " + popularViolation);
+
+        BusTicketService service = new BusTicketService();
+        BusTicket ticket1 = service.createBusTicket("22", "CLA", "MONTH","2020-01-01","100");
+        BusTicket ticket2 = service.createBusTicket("23", "TFA", "MONTH","2020-01-01","10");
+        BusTicket ticket3 = service.createBusTicket("24", "CLA", "MONTH","2020-01-01","200");
+
+        System.out.println(service.removeTicketById("100"));
+        System.out.println(service.removeTicketById("22"));
+
+        System.out.println(service.getTicketById("100"));
+        System.out.println(service.getTicketById("23"));
+
+        System.out.println(service.searchByType("AAA"));
+        System.out.println(service.searchByType("MONTH"));
+
+        System.out.println(service.searchByPrice(40,50));
+        System.out.println(service.searchByPrice(100,300));
+
     }
 }

@@ -62,6 +62,6 @@ public class BusTicket {
 
     @Override
     public String toString() {
-        return "Ticket class: " + this.getTicketClass() + ", type: " + this.getTicketType() + ", date: " + this.getTicketDate() + ", price: " + this.getPrice();
+        return "ID: " + this.getId() + ", ticket class: " + this.getTicketClass() + ", type: " + this.getTicketType() + ", date: " + this.getTicketDate() + ", price: " + this.getPrice();
     }
 }

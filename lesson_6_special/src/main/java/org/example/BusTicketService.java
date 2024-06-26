@@ -14,7 +14,7 @@ public class BusTicketService {
     private final List<BusTicket> ticketStorage;
 
     /**
-     * Constructs a new BusTicketService.
+     * Constructs a new BusTicketService
      */
     public BusTicketService() {
         this.ticketStorage = new ArrayList<>();
@@ -23,13 +23,15 @@ public class BusTicketService {
     /**
      * Creates a new bus ticket with the given parameters and adds it to the storage.
      *
-     * @param id    the ID of the ticket
-     * @param type  the type of the ticket
-     * @param date  the start date of the ticket
+     * @param id          the ID of the ticket
+     * @param ticketClass the class of the ticket
+     * @param type        the type of the ticket
+     * @param date        the start date of the ticket
+     * @param price       the price of the ticket
      * @return the created BusTicket
      */
-    public BusTicket createBusTicket(String id, String type, String date) {
-        BusTicket ticket = new BusTicket(id, "default", type, date, "10");
+    public BusTicket createBusTicket(String id, String ticketClass, String type, String date, String price) {
+        BusTicket ticket = new BusTicket(id, ticketClass, type, date, price);
         this.ticketStorage.add(ticket);
         return ticket;
     }
@@ -39,8 +41,8 @@ public class BusTicketService {
      *
      * @param id the ID of the ticket to be removed
      */
-    public void removeTicketById(String id) {
-        ticketStorage.removeIf(ticket -> Objects.equals(ticket.getId(), id));
+    public boolean removeTicketById(String id) {
+        return ticketStorage.removeIf(ticket -> Objects.equals(ticket.getId(), id));
     }
 
     /**
@@ -81,7 +83,6 @@ public class BusTicketService {
                         int price = Integer.parseInt(ticket.getPrice());
                         return price >= min && price <= max;
                     } catch (NumberFormatException e) {
-                        // Log and skip tickets with invalid price format
                         return false;
                     }
                 })
