@@ -59,10 +59,9 @@ public class CustomHashSet<T> implements Iterable<T> {
     private void resize() {
         var oldSet = buckets;
         initializeBuckets(oldSet.length * 2);
-        for (CustomHashSetBucket<T> bucket : oldSet) {
-            for (T element : bucket) {
-                put(element);
-            }
+        var iterator = new CustomHashSetIterator(oldSet);
+        while (iterator.hasNext()){
+            put(iterator.next());
         }
     }
 
