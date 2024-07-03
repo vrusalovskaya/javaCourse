@@ -29,7 +29,11 @@ public class TicketDao {
 
                 return ticket.getId();
             } catch (Exception e) {
-                tx.rollback();
+                try {
+                    tx.rollback();
+                } catch (Exception ex) {
+                   e.addSuppressed(ex);
+                }
                 throw e;
             }
         }
@@ -67,7 +71,11 @@ public class TicketDao {
                 query.executeUpdate();
                 tx.commit();
             } catch (Exception e) {
-                tx.rollback();
+                try {
+                    tx.rollback();
+                } catch (Exception ex) {
+                    e.addSuppressed(ex);
+                }
                 throw e;
             }
         }

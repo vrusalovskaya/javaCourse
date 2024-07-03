@@ -27,7 +27,11 @@ public class UserDao {
 
                 return user.getId();
             } catch (Exception e) {
-                tx.rollback();
+                try {
+                    tx.rollback();
+                } catch (Exception ex) {
+                    e.addSuppressed(ex);
+                }
                 throw e;
             }
         }
@@ -54,7 +58,11 @@ public class UserDao {
                 query.executeUpdate();
                 tx.commit();
             } catch (Exception e) {
-                tx.rollback();
+                try {
+                    tx.rollback();
+                } catch (Exception ex) {
+                    e.addSuppressed(ex);
+                }
                 throw e;
             }
         }
@@ -76,7 +84,11 @@ public class UserDao {
                 session.persist(user);
                 tx.commit();
             } catch (Exception e) {
-                tx.rollback();
+                try {
+                    tx.rollback();
+                } catch (Exception ex) {
+                    e.addSuppressed(ex);
+                }
                 throw e;
             }
 
