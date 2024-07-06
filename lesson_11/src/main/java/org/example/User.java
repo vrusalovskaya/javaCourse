@@ -46,6 +46,15 @@ public class User {
         this.name = name;
     }
 
+    public boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean active) {
+        isActive = active;
+    }
+
+
     public Timestamp getCreationDate() {
         return creationDate;
     }
