@@ -1,40 +1,47 @@
 package org.example;
 
+import org.example.entities.Ticket;
+import org.example.entities.TicketType;
+import org.example.entities.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class UserDao {
+
     private final SessionFactory sessionFactory;
 
     public UserDao(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
-    @Transactional(rollbackFor = Exception.class)
     public int createUser(String name) {
-        Session session = sessionFactory.openSession();
+        Session session = getSession();
         User user = new User();
         user.setName(name);
         session.persist(user);
         return user.getId();
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    public boolean activateUserAndCreateTicket(int id) {
-        Session session = sessionFactory.openSession();
-        String hql = "FROM " + User.class.getCanonicalName() + " U WHERE U.id = :passed_id";
-        var query = session.createSelectionQuery(hql, User.class);
-        query.setParameter("passed_id", id);
-        var user = query.getSingleResultOrNull();
+    public User getUser(int id) {
+        return getSession().get(User.class, id);
+    }
+
+    public int activateUserAndCreateTicket(User user, TicketType ticketType) {
+        Session session = getSession();
 
         user.setIsActive(true);
-        session.persist(user);
+        Ticket ticket = new Ticket();
+        ticket.setType(ticketType);
+        ticket.setUser(user);
 
-        TicketDao ticketDao = new TicketDao(this.sessionFactory);
-        ticketDao.createTicket(user);
-        return true;
+        session.persist(user);
+        session.persist(ticket);
+        return ticket.getId();
+    }
+
+    private Session getSession() {
+        return sessionFactory.getCurrentSession();
     }
 }

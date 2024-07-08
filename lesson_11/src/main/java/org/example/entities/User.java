@@ -1,4 +1,4 @@
-package org.example;
+package org.example.entities;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -24,7 +24,7 @@ public class User {
     @Column(name = "creation_date")
     private Timestamp creationDate;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private Set<Ticket> tickets;
 
     public User() {
