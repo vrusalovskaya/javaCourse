@@ -11,8 +11,11 @@ import java.util.Optional;
 @Service
 public class TicketService {
 
-    @Autowired
-    TicketRepository ticketRepository;
+    private final TicketRepository ticketRepository;
+
+    public TicketService(TicketRepository ticketRepository) {
+        this.ticketRepository = ticketRepository;
+    }
 
     @Transactional
     public Optional<Ticket> getTicketById(Integer id) {
