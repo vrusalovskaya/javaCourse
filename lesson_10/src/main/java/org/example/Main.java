@@ -1,20 +1,17 @@
 package org.example;
 
-import java.sql.SQLException;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Main {
-    public static void main(String[] args) throws SQLException {
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            System.out.println(e);
-        }
+    public static void main(String[] args) throws Exception {
 
-        UserDao userDao = new UserDao("jdbc:postgresql://localhost:5432/my_ticket_service_db", "postgres", "postgres42");
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        UserDao userDao = context.getBean(UserDao.class);
+        TicketDao ticketDao = context.getBean(TicketDao.class);
+
         System.out.println(userDao.createUser("Melisa"));
         userDao.getUserById(7).ifPresent(System.out::println);
 
-        TicketDao ticketDao = new TicketDao("jdbc:postgresql://localhost:5432/my_ticket_service_db", "postgres", "postgres42");
         System.out.println(ticketDao.createTicket(4, TicketType.WEEK));
         ticketDao.getTicketById(2).ifPresent(System.out::println);
         for (Ticket ticket : ticketDao.getTicketsByUserId(2)) {
@@ -24,6 +21,6 @@ public class Main {
         ticketDao.updateTicketType(1, TicketType.YEAR);
         ticketDao.getTicketById(1).ifPresent(System.out::println);
 
-       userDao.deleteUserById(3);
+        userDao.deleteUserById(3);
     }
 }

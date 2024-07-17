@@ -1,8 +1,12 @@
 package org.example;
 
+import org.springframework.stereotype.Repository;
+
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.Optional;
 
+@Repository
 public class UserDao {
 
     private static final String USERS_TABLE_NAME = "users";
@@ -26,14 +30,10 @@ public class UserDao {
                     + ID_COLUMN_NAME + " = ?";
 
 
-    private final String url;
-    private final String userName;
-    private final String password;
+    private final DataSource dataSource;
 
-    public UserDao(String url, String userName, String password) {
-        this.url = url;
-        this.userName = userName;
-        this.password = password;
+    public UserDao(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     public int createUser(String name) throws SQLException {
@@ -85,10 +85,10 @@ public class UserDao {
 
     public Optional<User> getUserById(int id) throws SQLException {
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_FROM_USERS_SCRIPT);
+             PreparedStatement statement = connection.prepareStatement(SELECT_FROM_USERS_SCRIPT)
         ) {
             statement.setInt(1, id);
-            try (ResultSet result = statement.executeQuery();) {
+            try (ResultSet result = statement.executeQuery()) {
                 if (result.next()) {
                     String name = result.getString(NAME_COLUMN_NAME);
                     Timestamp creationDate = result.getTimestamp(CREATION_DATE_COLUMN_NAME);
@@ -138,6 +138,6 @@ public class UserDao {
     }
 
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(url, userName, password);
+        return dataSource.getConnection();
     }
 }

@@ -1,11 +1,15 @@
 package org.example;
 
 
+import org.springframework.stereotype.Repository;
+
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class TicketDao {
     private static final String ID_COLUMN_NAME = "id";
     private static final String USER_ID_COLUMN_NAME = "user_id";
@@ -42,14 +46,10 @@ public class TicketDao {
                     + ") VALUES (?,?::"
                     + TICKET_TYPE_COLUMN_NAME + ")";
 
-    private final String url;
-    private final String userName;
-    private final String password;
+    private final DataSource dataSource;
 
-    public TicketDao(String url, String userName, String password) {
-        this.url = url;
-        this.userName = userName;
-        this.password = password;
+    public TicketDao(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     public int createTicket(int userId, TicketType type) throws SQLException {
@@ -105,7 +105,7 @@ public class TicketDao {
              PreparedStatement statement = connection.prepareStatement(SELECT_FROM_TICKETS_BY_ID_SCRIPT)) {
 
             statement.setInt(1, id);
-            try (ResultSet result = statement.executeQuery();) {
+            try (ResultSet result = statement.executeQuery()) {
                 if (result.next()) {
                     int userId = result.getInt(USER_ID_COLUMN_NAME);
                     TicketType type = TicketType.valueOf(result.getString(TICKET_TYPE_COLUMN_NAME));
@@ -120,9 +120,9 @@ public class TicketDao {
 
     public List<Ticket> getTicketsByUserId(int userId) throws SQLException {
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_FROM_TICKETS_BY_USER_ID_SCRIPT);) {
+             PreparedStatement statement = connection.prepareStatement(SELECT_FROM_TICKETS_BY_USER_ID_SCRIPT)) {
             statement.setInt(1, userId);
-            try (ResultSet result = statement.executeQuery();) {
+            try (ResultSet result = statement.executeQuery()) {
                 ArrayList<Ticket> tickets = new ArrayList<>();
                 while (result.next()) {
                     int id = result.getInt(ID_COLUMN_NAME);
@@ -173,6 +173,6 @@ public class TicketDao {
     }
 
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(url, userName, password);
+        return dataSource.getConnection();
     }
 }
