@@ -1,5 +1,6 @@
 package com.example.lesson_12;
 
+import com.example.lesson_12.services.SeedingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -8,12 +9,12 @@ import org.springframework.stereotype.Component;
 public class AppCommandLineRunner implements CommandLineRunner {
 
     @Autowired(required = false)
-    private ThisIsMyFirstConditionalBean conditionalBean;
+    private SeedingService seedingService;
 
     @Override
     public void run(String... args) throws Exception {
-        if (conditionalBean != null) {
-            conditionalBean.printMessage();
+        if (seedingService != null) {
+            seedingService.seed();
         } else {
             System.out.println("The conditional bean was not created.");
         }
