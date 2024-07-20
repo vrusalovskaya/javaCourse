@@ -41,7 +41,7 @@ public class TicketServiceTest {
 
         assertTrue(foundTicket.isPresent());
         assertEquals(ticket.getId(), foundTicket.get().getId());
-        verify(ticketRepository, times(1)).findById(1);
+        verify(ticketRepository, times(1)).findById(TICKET_ID);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class TicketServiceTest {
         Optional<Ticket> foundTicket = ticketService.getTicketById(TICKET_ID);
 
         assertFalse(foundTicket.isPresent());
-        verify(ticketRepository, times(1)).findById(1);
+        verify(ticketRepository, times(1)).findById(TICKET_ID);
     }
 
     @Test
